@@ -22,9 +22,9 @@ const testimonials = [
     text: "I've done a lot of haircuts, but only one customer makes the whole shop laugh. That's Dino. 💈",
   },
   {
-    name: "Barcelona",
-    initials: "BCN",
-    text: "We've hosted millions of tourists. But only one Swedish Papi. The city misses him already. 🇪🇸",
+    name: "Ervakka",
+    initials: "ER",
+    text: "When people mention papi i showed them the real one, its that easy 🇪🇸",
   },
   {
     name: "Lelja Sehovic",

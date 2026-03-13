@@ -1,12 +1,53 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
+import confetti from "canvas-confetti";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import StatsBar from "@/components/StatsBar";
+import GallerySection from "@/components/GallerySection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import QuotesSection from "@/components/QuotesSection";
+import MessageWall from "@/components/MessageWall";
+import DailyWisdom from "@/components/DailyWisdom";
+import FooterSection from "@/components/FooterSection";
 
 const Index = () => {
+  useEffect(() => {
+    // Birthday confetti burst on load
+    const duration = 3000;
+    const end = Date.now() + duration;
+    const colors = ["#2563eb", "#d4a017", "#ffffff", "#fbbf24"];
+
+    const frame = () => {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors,
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors,
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    };
+    frame();
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <DailyWisdom />
+      <HeroSection />
+      <AboutSection />
+      <StatsBar />
+      <GallerySection />
+      <TestimonialsSection />
+      <QuotesSection />
+      <MessageWall />
+      <FooterSection />
     </div>
   );
 };

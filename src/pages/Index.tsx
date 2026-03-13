@@ -8,6 +8,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import QuotesSection from "@/components/QuotesSection";
 import MessageWall from "@/components/MessageWall";
 import DailyWisdom from "@/components/DailyWisdom";
+import MusicToggle from "@/components/MusicToggle";
 import FooterSection from "@/components/FooterSection";
 
 const Index = () => {

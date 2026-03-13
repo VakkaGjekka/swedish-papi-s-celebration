@@ -1,32 +1,32 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Music, VolumeX } from "lucide-react";
 
-const MUSIC_URL = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-// We'll use an embedded YouTube audio approach via an iframe for the actual song
-const YOUTUBE_ID = "5uo0oebWVQo"; // will.i.am - It's My Birthday
+const MUSIC_URL = "https://cdn.pixabay.com/audio/2022/03/15/audio_8cb749d484.mp3"; // Happy birthday style track
 
 const MusicToggle = () => {
   const [playing, setPlaying] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const toggle = () => {
-    setPlaying((prev) => !prev);
+    if (!audioRef.current) {
+      const audio = new Audio(MUSIC_URL);
+      audio.loop = true;
+      audio.volume = 0.5;
+      audioRef.current = audio;
+    }
+
+    if (playing) {
+      audioRef.current.pause();
+      setPlaying(false);
+    } else {
+      audioRef.current.play().catch(() => {});
+      setPlaying(true);
+    }
   };
 
   return (
     <>
-      {/* Hidden YouTube iframe for audio */}
-      {playing && (
-        <iframe
-          ref={iframeRef}
-          src={`https://www.youtube.com/embed/${YOUTUBE_ID}?autoplay=1&loop=1&playlist=${YOUTUBE_ID}&controls=0`}
-          allow="autoplay"
-          className="hidden"
-          title="Birthday Music"
-        />
-      )}
-
       <motion.button
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -48,7 +48,6 @@ const MusicToggle = () => {
         </AnimatePresence>
       </motion.button>
 
-      {/* Label tooltip on first load */}
       {!playing && (
         <motion.div
           initial={{ opacity: 0, x: 20 }}

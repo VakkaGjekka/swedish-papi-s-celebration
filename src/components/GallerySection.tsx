@@ -66,27 +66,27 @@ const GallerySection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/80 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/90 backdrop-blur-md p-4"
             onClick={() => setSelected(null)}
           >
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
-              className="relative max-w-3xl max-h-[85vh] rounded-2xl overflow-hidden"
+              className="relative flex flex-col items-center max-w-4xl w-full max-h-[90vh]"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={photos[selected].src}
                 alt={photos[selected].caption}
-                className="w-full h-full object-contain rounded-2xl"
+                className="max-w-full max-h-[80vh] w-auto h-auto object-contain rounded-2xl"
               />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-foreground/80 to-transparent">
-                <p className="font-display font-bold text-primary-foreground text-center">{photos[selected].caption}</p>
+              <div className="mt-3">
+                <p className="font-display font-bold text-primary-foreground text-center text-lg">{photos[selected].caption}</p>
               </div>
               <button
                 onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 flex items-center justify-center hover-lift"
+                className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-background/90 flex items-center justify-center hover-lift shadow-lg"
               >
                 <X className="h-5 w-5 text-foreground" />
               </button>

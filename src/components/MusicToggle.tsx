@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Music, VolumeX } from "lucide-react";
 
@@ -15,7 +15,6 @@ const MusicToggle = () => {
   const [playing, setPlaying] = useState(false);
   const [apiReady, setApiReady] = useState(false);
   const playerRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Load YouTube IFrame API
@@ -23,7 +22,10 @@ const MusicToggle = () => {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
-      window.onYouTubeIframeAPIReady = () => setApiReady(true);
+
+      window.onYouTubeIframeAPIReady = () => {
+        setApiReady(true);
+      };
     } else {
       setApiReady(true);
     }
@@ -40,24 +42,29 @@ const MusicToggle = () => {
         autoplay: 0,
         loop: 1,
         playlist: YOUTUBE_VIDEO_ID,
+        mute: 1
       },
       events: {
+        onReady: () => {
+          console.log("YouTube Player Ready");
+        },
         onStateChange: (event: any) => {
           if (event.data === window.YT.PlayerState.ENDED) {
             playerRef.current?.playVideo();
           }
-        },
-      },
+        }
+      }
     });
   }, [apiReady]);
 
   const toggle = () => {
-    if (!playerRef.current?.playVideo) return;
+    if (!playerRef.current) return;
 
     if (playing) {
       playerRef.current.pauseVideo();
       setPlaying(false);
     } else {
+      playerRef.current.unMute();
       playerRef.current.playVideo();
       setPlaying(true);
     }
@@ -65,7 +72,7 @@ const MusicToggle = () => {
 
   return (
     <>
-      <div id="yt-player" className="hidden" />
+      <div id="yt-player" style={{ display: "none" }} />
 
       <motion.button
         initial={{ scale: 0 }}
@@ -77,11 +84,21 @@ const MusicToggle = () => {
       >
         <AnimatePresence mode="wait">
           {playing ? (
-            <motion.div key="on" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+            <motion.div
+              key="on"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+            >
               <Music className="h-6 w-6 text-accent-foreground animate-pulse" />
             </motion.div>
           ) : (
-            <motion.div key="off" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+            <motion.div
+              key="off"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+            >
               <VolumeX className="h-6 w-6 text-accent-foreground" />
             </motion.div>
           )}
@@ -93,7 +110,7 @@ const MusicToggle = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 1.5 }}
-          className="fixed bottom-8 right-22 z-40 glass-card px-3 py-1.5 text-sm font-display font-semibold text-foreground"
+          className="fixed bottom-8 right-24 z-40 glass-card px-3 py-1.5 text-sm font-display font-semibold text-foreground"
         >
           🎵 It's My Birthday - will.i.am
         </motion.div>

@@ -15,7 +15,7 @@ interface Message {
 const emojis = ["🎉", "🔥", "👑", "❤️", "🥳", "⭐", "🎂", "💪"];
 
 const defaultMessages: Message[] = [
-  { id: 1, name: "The Squad", text: "Happy Birthday King! Swedish Papi forever! 👑", emoji: "🎉" },
+  { id: 1, name: "Tutin", text: "Happy Birthday King! Swedish Papi forever! 👑", emoji: "🎉" },
   { id: 2, name: "A Fan", text: "Dino you're a legend, never change!", emoji: "🔥" },
   { id: 3, name: "Barcelona", text: "Come back soon, we miss Swedish Papi energy!", emoji: "❤️" },
 ];

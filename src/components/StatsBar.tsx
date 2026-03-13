@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 const stats = [
   { label: "Friends Made", value: "∞", emoji: "❤️" },
-  { label: "Legendary Moments", value: "999+", emoji: "🏆" },
-  { label: "Vibes Given", value: "100%", emoji: "🔥" },
+  { label: "burgers tried", value: "999+", emoji: "🏆" },
+  { label: "takes the bed and leaves vakka no space", value: "100%", emoji: "🔥" },
   { label: "Swedish Papi Level", value: "MAX", emoji: "👑" },
 ];
 

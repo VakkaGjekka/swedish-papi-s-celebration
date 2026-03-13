@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
 const quotes = [
-  { text: "Life is too short to not be legendary.", topic: "🔥 Life" },
-  { text: "Real ones don't need an introduction — the energy speaks first.", topic: "👑 Confidence" },
+  { text: "me ta merzit kja jettt", topic: "🔥 Life" },
+  { text: "i dont make plans, plans make me papi.", topic: "👑 Confidence" },
   { text: "Good friends, good food, good times. That's the whole recipe.", topic: "❤️ Friendship" },
   { text: "Why fit in when you were born to be Swedish Papi?", topic: "✨ Humor" },
-  { text: "Be the kind of person that makes other people want to up their game.", topic: "💪 Motivation" },
+  { text: "Be the kind of person that eat a burger every where he goes", topic: "💪 Motivation" },
   { text: "Every day is a good day when the vibes are right.", topic: "🎉 Living" },
 ];
 

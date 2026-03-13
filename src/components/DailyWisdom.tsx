@@ -4,11 +4,11 @@ import { X, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const wisdoms = [
-  { flag: "🇦🇱", lang: "Albanian", text: "Mos harro — edhe mbreti ka nevojë për një kafe." },
+  { flag: "🇦🇱", lang: "Albanian", text: "Me ta merzit krejt kja jet" },
   { flag: "🇸🇪", lang: "Swedish", text: "Lev stort, skratta mycket, och var alltid lite Swedish Papi." },
   { flag: "🇧🇦", lang: "Bosnian", text: "Život je bolji kad imaš dobre prijatelje i dobru priču." },
   { flag: "🇬🇧", lang: "English", text: "Stay legendary. Stay Swedish Papi." },
-  { flag: "🇦🇱", lang: "Albanian", text: "Jeta është e shkurtër — bëje çdo ditë legjendare." },
+  { flag: "🇦🇱", lang: "Albanian", text: "Jeta është e shkurtër — bëje çdo ditë legjendare me papin" },
   { flag: "🇸🇪", lang: "Swedish", text: "En riktig kung behöver ingen krona — energin räcker." },
   { flag: "🇧🇦", lang: "Bosnian", text: "Pravi prijatelji su zlata vrijedni — čuvaj ih." },
   { flag: "🇬🇧", lang: "English", text: "The vibe is not something you create — it's something you are." },

@@ -2,19 +2,19 @@ import { motion } from "framer-motion";
 
 const testimonials = [
   {
-    name: "A Loyal Friend",
-    initials: "LF",
-    text: "Dino is the only person who can walk into a room and instantly upgrade the vibe. It's a superpower. 🔥",
+    name: "Armin Sehovic",
+    initials: "AS",
+    text: "Dino is the only person who can walk into a room and i instantly leave that room, just kidding i actually start swearing at him 🔥",
   },
   {
-    name: "The Squad",
-    initials: "TS",
-    text: "Swedish Papi isn't just a nickname — it's a lifestyle. And Dino lives it every single day. 👑",
+    name: "Tutin Major",
+    initials: "TM",
+    text: "Swedish Papi isn't just a nickname — its the new upcoming major of the city 👑",
   },
   {
-    name: "Everyone Ever",
-    initials: "EE",
-    text: "You haven't truly partied until you've partied with Dino. Certified legend. 🎉",
+    name: "tika",
+    initials: "ER",
+    text: "he a cuttie patotie but needs some gym hopefully vakka will help with that 🎉",
   },
   {
     name: "His Barber",
@@ -27,9 +27,9 @@ const testimonials = [
     text: "We've hosted millions of tourists. But only one Swedish Papi. The city misses him already. 🇪🇸",
   },
   {
-    name: "The Internet",
-    initials: "TI",
-    text: "If charisma had a face, it would be Dino's face. Simple as that. ✨",
+    name: "Lelja Sehovic",
+    initials: "LS",
+    text: "If charisma had a face, it would be Dinos face, nope hell nah would be mine of course. ✨",
   },
 ];
 

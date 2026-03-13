@@ -1,39 +1,79 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Music, VolumeX } from "lucide-react";
 
-const MUSIC_URL = "https://cdn.pixabay.com/audio/2022/03/15/audio_8cb749d484.mp3"; // Happy birthday style track
+const YOUTUBE_VIDEO_ID = "5uo0oebWVQo"; // will.i.am - It's My Birthday
+
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
 
 const MusicToggle = () => {
   const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [apiReady, setApiReady] = useState(false);
+  const playerRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Load YouTube IFrame API
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+      window.onYouTubeIframeAPIReady = () => setApiReady(true);
+    } else {
+      setApiReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!apiReady || playerRef.current) return;
+
+    playerRef.current = new window.YT.Player("yt-player", {
+      height: "0",
+      width: "0",
+      videoId: YOUTUBE_VIDEO_ID,
+      playerVars: {
+        autoplay: 0,
+        loop: 1,
+        playlist: YOUTUBE_VIDEO_ID,
+      },
+      events: {
+        onStateChange: (event: any) => {
+          if (event.data === window.YT.PlayerState.ENDED) {
+            playerRef.current?.playVideo();
+          }
+        },
+      },
+    });
+  }, [apiReady]);
 
   const toggle = () => {
-    if (!audioRef.current) {
-      const audio = new Audio(MUSIC_URL);
-      audio.loop = true;
-      audio.volume = 0.5;
-      audioRef.current = audio;
-    }
+    if (!playerRef.current?.playVideo) return;
 
     if (playing) {
-      audioRef.current.pause();
+      playerRef.current.pauseVideo();
       setPlaying(false);
     } else {
-      audioRef.current.play().catch(() => {});
+      playerRef.current.playVideo();
       setPlaying(true);
     }
   };
 
   return (
     <>
+      <div id="yt-player" className="hidden" />
+
       <motion.button
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 1, type: "spring" }}
         onClick={toggle}
         className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full gold-gradient shadow-xl flex items-center justify-center hover-lift"
-        title={playing ? "Mute music" : "Play birthday music 🎵"}
+        title={playing ? "Pause music" : "Play: will.i.am - It's My Birthday 🎵"}
       >
         <AnimatePresence mode="wait">
           {playing ? (
@@ -55,7 +95,7 @@ const MusicToggle = () => {
           transition={{ delay: 1.5 }}
           className="fixed bottom-8 right-22 z-40 glass-card px-3 py-1.5 text-sm font-display font-semibold text-foreground"
         >
-          🎵 Play birthday music!
+          🎵 It's My Birthday - will.i.am
         </motion.div>
       )}
     </>

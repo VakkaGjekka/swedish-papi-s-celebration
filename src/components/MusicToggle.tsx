@@ -13,49 +13,52 @@ declare global {
 
 const MusicToggle = () => {
   const [playing, setPlaying] = useState(false);
-  const [apiReady, setApiReady] = useState(false);
   const playerRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Load YouTube IFrame API
-    if (!window.YT) {
+    // Create a detached div for YouTube player (outside React DOM)
+    const playerDiv = document.createElement("div");
+    playerDiv.style.display = "none";
+    document.body.appendChild(playerDiv);
+
+    const initPlayer = () => {
+      playerRef.current = new window.YT.Player(playerDiv, {
+        height: "0",
+        width: "0",
+        videoId: YOUTUBE_VIDEO_ID,
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: YOUTUBE_VIDEO_ID,
+        },
+        events: {
+          onReady: () => {
+            console.log("YouTube Player Ready");
+          },
+          onStateChange: (event: any) => {
+            if (event.data === window.YT.PlayerState.ENDED) {
+              playerRef.current?.playVideo();
+            }
+          },
+        },
+      });
+    };
+
+    if (window.YT && window.YT.Player) {
+      initPlayer();
+    } else {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
-
-      window.onYouTubeIframeAPIReady = () => {
-        setApiReady(true);
-      };
-    } else {
-      setApiReady(true);
+      window.onYouTubeIframeAPIReady = initPlayer;
     }
+
+    return () => {
+      playerRef.current?.destroy();
+      playerDiv.remove();
+    };
   }, []);
-
-  useEffect(() => {
-    if (!apiReady || playerRef.current) return;
-
-    playerRef.current = new window.YT.Player("yt-player", {
-      height: "0",
-      width: "0",
-      videoId: YOUTUBE_VIDEO_ID,
-      playerVars: {
-        autoplay: 0,
-        loop: 1,
-        playlist: YOUTUBE_VIDEO_ID,
-        mute: 1
-      },
-      events: {
-        onReady: () => {
-          console.log("YouTube Player Ready");
-        },
-        onStateChange: (event: any) => {
-          if (event.data === window.YT.PlayerState.ENDED) {
-            playerRef.current?.playVideo();
-          }
-        }
-      }
-    });
-  }, [apiReady]);
 
   const toggle = () => {
     if (!playerRef.current) return;

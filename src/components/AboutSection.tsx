@@ -86,6 +86,13 @@ const AboutSection = () => {
                   <span className="text-2xl mb-2 block">{item.emoji}</span>
                   <h3 className="font-display font-bold text-xl text-foreground mb-2">{item.year}</h3>
                   <p className="text-muted-foreground">{item.text}</p>
+                  {item.image && (
+                    <img 
+                      src={item.image} 
+                      alt={item.year}
+                      className="mt-4 w-full h-48 object-cover rounded-lg shadow-lg"
+                    />
+                  )}
                 </div>
                 <div className="w-4 h-4 rounded-full gold-gradient border-4 border-background shadow-md hidden sm:block" />
                 <div className="flex-1 hidden sm:block" />

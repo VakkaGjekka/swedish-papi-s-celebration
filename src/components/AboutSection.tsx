@@ -8,11 +8,13 @@ const timeline = [
     year: "The Early Days",
     emoji: "🌟",
     text: "A young legend in the making. Even back then, Dino had that unmistakable charisma that made everyone gravitate toward him.",
+    image: dinoChildhood,
   },
   {
     year: "Rise of Swedish Papi",
     emoji: "🇸🇪",
     text: "The nickname was born. Part Swedish swagger, part pure Dino energy — 'Swedish Papi' became the brand everyone recognized.",
+    image: dinoSwedishPapi,
   },
   {
     year: "Global Icon Status",

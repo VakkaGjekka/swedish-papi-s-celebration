@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Star, Heart, Zap } from "lucide-react";
+import dinoChildhood from "@/assets/dino-childhood.jpg";
+import dinoSwedishPapi from "@/assets/dino-swedish-papi.jpg";
 
 const timeline = [
   {

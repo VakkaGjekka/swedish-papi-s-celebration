@@ -96,8 +96,6 @@ const MusicToggle = () => {
     return () => {
       playerRef.current?.destroy();
       playerRef.current = null;
-      setPlaying(false);
-      setIsReady(false);
       playerHostRef.current?.remove();
       playerHostRef.current = null;
     };

@@ -1,16 +1,20 @@
 import { motion } from "framer-motion";
 import { Star, Heart, Zap } from "lucide-react";
+import dinoChildhood from "@/assets/dino-childhood.jpg";
+import dinoSwedishPapi from "@/assets/dino-swedish-papi.jpg";
 
 const timeline = [
   {
     year: "The Early Days",
     emoji: "🌟",
     text: "A young legend in the making. Even back then, Dino had that unmistakable charisma that made everyone gravitate toward him.",
+    image: dinoChildhood,
   },
   {
     year: "Rise of Swedish Papi",
     emoji: "🇸🇪",
     text: "The nickname was born. Part Swedish swagger, part pure Dino energy — 'Swedish Papi' became the brand everyone recognized.",
+    image: dinoSwedishPapi,
   },
   {
     year: "Global Icon Status",
@@ -82,6 +86,13 @@ const AboutSection = () => {
                   <span className="text-2xl mb-2 block">{item.emoji}</span>
                   <h3 className="font-display font-bold text-xl text-foreground mb-2">{item.year}</h3>
                   <p className="text-muted-foreground">{item.text}</p>
+                  {item.image && (
+                    <img 
+                      src={item.image} 
+                      alt={item.year}
+                      className="mt-4 w-full h-48 object-cover rounded-lg shadow-lg"
+                    />
+                  )}
                 </div>
                 <div className="w-4 h-4 rounded-full gold-gradient border-4 border-background shadow-md hidden sm:block" />
                 <div className="flex-1 hidden sm:block" />

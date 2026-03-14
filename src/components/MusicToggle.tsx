@@ -75,7 +75,6 @@ const MusicToggle = () => {
 
   return (
     <>
-      <div id="yt-player" style={{ display: "none" }} />
 
       <motion.button
         initial={{ scale: 0 }}

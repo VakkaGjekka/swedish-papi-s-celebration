@@ -13,61 +13,103 @@ declare global {
 
 const MusicToggle = () => {
   const [playing, setPlaying] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const playerRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const playerHostRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Create a detached div for YouTube player (outside React DOM)
-    const playerDiv = document.createElement("div");
-    playerDiv.style.display = "none";
-    document.body.appendChild(playerDiv);
+    const host = document.createElement("div");
+    host.setAttribute("aria-hidden", "true");
+    host.style.position = "fixed";
+    host.style.left = "-9999px";
+    host.style.bottom = "0";
+    host.style.width = "1px";
+    host.style.height = "1px";
+    host.style.opacity = "0";
+    host.style.pointerEvents = "none";
+    document.body.appendChild(host);
+    playerHostRef.current = host;
 
     const initPlayer = () => {
-      playerRef.current = new window.YT.Player(playerDiv, {
-        height: "0",
-        width: "0",
+      if (!window.YT?.Player || !playerHostRef.current || playerRef.current) return;
+
+      playerRef.current = new window.YT.Player(playerHostRef.current, {
+        height: "1",
+        width: "1",
         videoId: YOUTUBE_VIDEO_ID,
         playerVars: {
           autoplay: 0,
           loop: 1,
           playlist: YOUTUBE_VIDEO_ID,
+          controls: 0,
+          disablekb: 1,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
         },
         events: {
-          onReady: () => {
-            console.log("YouTube Player Ready");
+          onReady: (event: any) => {
+            setIsReady(true);
+            event.target.setVolume?.(100);
           },
           onStateChange: (event: any) => {
             if (event.data === window.YT.PlayerState.ENDED) {
-              playerRef.current?.playVideo();
+              event.target.playVideo();
             }
+            setPlaying(event.data === window.YT.PlayerState.PLAYING);
           },
         },
       });
     };
 
-    if (window.YT && window.YT.Player) {
+    if (window.YT?.Player) {
       initPlayer();
     } else {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-      window.onYouTubeIframeAPIReady = initPlayer;
+      const existingScript = document.querySelector(
+        'script[src="https://www.youtube.com/iframe_api"]'
+      );
+      if (!existingScript) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+      }
+
+      const previousReadyHandler = window.onYouTubeIframeAPIReady;
+      const nextReadyHandler = () => {
+        previousReadyHandler?.();
+        initPlayer();
+      };
+
+      window.onYouTubeIframeAPIReady = nextReadyHandler;
+
+      return () => {
+        if (window.onYouTubeIframeAPIReady === nextReadyHandler) {
+          window.onYouTubeIframeAPIReady = previousReadyHandler ?? (() => {});
+        }
+      };
     }
 
+    return undefined;
+  }, []);
+
+  useEffect(() => {
     return () => {
       playerRef.current?.destroy();
-      playerDiv.remove();
+      playerRef.current = null;
+      playerHostRef.current?.remove();
+      playerHostRef.current = null;
     };
   }, []);
 
   const toggle = () => {
-    if (!playerRef.current) return;
+    if (!playerRef.current || !isReady) return;
 
     if (playing) {
       playerRef.current.pauseVideo();
       setPlaying(false);
     } else {
-      playerRef.current.unMute();
+      playerRef.current.unMute?.();
+      playerRef.current.setVolume?.(100);
       playerRef.current.playVideo();
       setPlaying(true);
     }
@@ -75,14 +117,20 @@ const MusicToggle = () => {
 
   return (
     <>
-
       <motion.button
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 1, type: "spring" }}
         onClick={toggle}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full gold-gradient shadow-xl flex items-center justify-center hover-lift"
-        title={playing ? "Pause music" : "Play: will.i.am - It's My Birthday 🎵"}
+        disabled={!isReady}
+        className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full gold-gradient shadow-xl flex items-center justify-center hover-lift disabled:opacity-60 disabled:cursor-not-allowed"
+        title={
+          !isReady
+            ? "Loading song..."
+            : playing
+              ? "Pause music"
+              : "Play: will.i.am - It's My Birthday 🎵"
+        }
       >
         <AnimatePresence mode="wait">
           {playing ? (
@@ -114,7 +162,7 @@ const MusicToggle = () => {
           transition={{ delay: 1.5 }}
           className="fixed bottom-8 right-24 z-40 glass-card px-3 py-1.5 text-sm font-display font-semibold text-foreground"
         >
-          🎵 It's My Birthday - will.i.am
+          {isReady ? "🎵 It's My Birthday - will.i.am" : "🎵 Loading song..."}
         </motion.div>
       )}
     </>
